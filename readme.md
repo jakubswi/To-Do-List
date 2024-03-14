@@ -1,0 +1,1 @@
+Color palet: https://colorhunt.co/palette/5356ff378ce767c6e3dff5ff

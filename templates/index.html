@@ -1,0 +1,65 @@
+{% include "header.html" %}
+
+<div class="container py-2" style="background-color: #DFF5FF; border-radius: 15px;">
+    <div class="list-group py-3">
+        <form action="/delete" method="post">
+            {% for task in tasks.keys() %}
+            {% if tasks[task][2] == False %}
+            <label class="list-group-item d-flex gap-2 rounded" style="background-color: {{tasks[task][1]}}; ">
+                <input class="form-check-input flex-shrink-0" name="task done" type="checkbox" value="{{task}}">
+                <span>
+        {{task}}
+        <small class="d-block text-body-secondary">{{tasks[task][0]}}</small>
+      </span>
+                <div class="dropdown text-right">
+                    <a aria-expanded="true" class="d-block link-body-emphasis text-decoration-none dropdown-toggle show"
+                       data-bs-toggle="dropdown" href="#">
+                        <span class="dot" style="background-color: {{ tasks[task][1] }} !important;"></span>
+                    </a>
+                    <ul class="dropdown-menu text-small "
+                        data-popper-placement="bottom-end"
+                        style="position: absolute; inset: 0px 0px auto auto; margin: 0px; transform: translate3d(-0.571429px, 34.2857px, 0px);">
+                        <li><a class="dropdown-item" href="{{ url_for('change_color',task=task,color='red' )}}">Important</a>
+                        </li>
+                        <li><a class="dropdown-item" href="{{ url_for('change_color',task=task,color='#67C6E3' )}}">Normal</a>
+                        </li>
+                        <li><a class="dropdown-item" href="{{ url_for('change_color',task=task,color='green' )}}">Not important</a></li>
+                    </ul>
+                </div>
+            </label>
+            {% endif %}
+            {% endfor %}
+            {% if tasks %}
+            <button class="btn btn-primary" type="submit">Mark as done</button>
+            {% endif %}
+        </form>
+    </div>
+    <div>
+        <form action="/" method="post">
+            <div class="input-group mb-3">
+                <input aria-label="task" class="form-control" name="task" placeholder="Task" type="text">
+                <input aria-label="description" class="form-control" name="description" placeholder="Description"
+                       type="text">
+                <button class="btn btn-primary" type="submit">Add</button>
+            </div>
+        </form>
+    </div>
+</div>
+<div class="container py-3">
+    {% for task in tasks %}
+    {% if tasks[task][2] == True %}
+    <p class="rounded py-3 px-3" style="background-color: #5356FF;">
+        <del>{{ task }} Description: {{ tasks[task][0] }}</del>
+        <a href="{{url_for('restore',task=task)}}">
+            <svg class="bi bi-arrow-clockwise" fill="currentColor" height="16" viewBox="0 0 16 16"
+                 width="16" xmlns="http://www.w3.org/2000/svg">
+                <path d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z" fill-rule="evenodd"/>
+                <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466"/>
+            </svg>
+        </a></p>
+    {% endif %}
+    {% endfor %}
+</div>
+
+
+{% include "footer.html" %}
